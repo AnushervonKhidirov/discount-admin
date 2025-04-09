@@ -2,12 +2,10 @@ import Elysia, { t } from 'elysia';
 import { authMiddleware } from '@middleware/auth.middleware';
 import { roleMiddleware } from '@middleware/role-middleware';
 import { CashbackService } from './cashback.service';
-import { CompanyService } from '../company/company.service';
 import { createCashbackBody } from './dto/create-cashback.dto';
 import { updateCashbackBody } from './dto/update-cashback.dto';
 
 export const cashbackRouter = new Elysia({ prefix: 'cashbacks' });
-const companyService = new CompanyService();
 const cashbackService = new CashbackService();
 
 cashbackRouter
@@ -29,10 +27,7 @@ cashbackRouter
   .post(
     '/',
     async ({ body, query, error }) => {
-      const [company, companyErr] = await companyService.findOne({ id: query.companyId });
-      if (companyErr) throw error(companyErr.status, { ...companyErr });
-
-      const [cashback, cashbackErr] = await cashbackService.create(body, company.id);
+      const [cashback, cashbackErr] = await cashbackService.create(body, query.companyId);
       if (cashbackErr) throw error(cashbackErr.status, { ...cashbackErr });
 
       return cashback;
@@ -79,7 +74,7 @@ cashbackRouter
     { params: t.Object({ id: t.Number() }) },
   )
   .delete(
-    '/delete/:id',
+    '/:id',
     async ({ params, error }) => {
       const [cashback, err] = await cashbackService.delete(params.id);
       if (err) throw error(err.status, { ...err });
