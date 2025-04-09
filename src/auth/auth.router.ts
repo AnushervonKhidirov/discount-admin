@@ -6,7 +6,6 @@ import { signOutBody } from './dto/sign-out.dto';
 import { refreshTokenBody } from './dto/refresh-token.dto';
 
 export const authRouter = new Elysia({ prefix: 'auth' });
-
 const authService = new AuthService();
 
 authRouter

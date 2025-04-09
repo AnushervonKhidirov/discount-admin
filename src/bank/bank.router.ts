@@ -32,9 +32,7 @@ bankRouter
       if (err) throw error(err.status, { ...err });
       return bank;
     },
-    {
-      body: createBankBody,
-    },
+    { body: createBankBody },
   )
   .put(
     '/:id',
@@ -43,10 +41,7 @@ bankRouter
       if (err) throw error(err.status, { ...err });
       return bank;
     },
-    {
-      params: t.Object({ id: t.Number() }),
-      body: updateBankBody,
-    },
+    { params: t.Object({ id: t.Number() }), body: updateBankBody },
   )
   .patch(
     '/archive/:id',
@@ -55,9 +50,7 @@ bankRouter
       if (err) throw error(err.status, { ...err });
       return bank;
     },
-    {
-      params: t.Object({ id: t.Number() }),
-    },
+    { params: t.Object({ id: t.Number() }) },
   )
   .patch(
     '/unarchive/:id',
@@ -66,9 +59,7 @@ bankRouter
       if (err) throw error(err.status, { ...err });
       return bank;
     },
-    {
-      params: t.Object({ id: t.Number() }),
-    },
+    { params: t.Object({ id: t.Number() }) },
   )
   .post(
     '/upload-logo/:id',
@@ -77,10 +68,7 @@ bankRouter
       if (err) throw error(err.status, { ...err });
       return bank;
     },
-    {
-      body: uploadBody,
-      params: t.Object({ id: t.Number() }),
-    },
+    { body: uploadBody, params: t.Object({ id: t.Number() }) },
   )
   .delete(
     '/:id',
@@ -89,8 +77,5 @@ bankRouter
       if (err) throw error(err.status, { ...err });
       return bank;
     },
-    {
-      params: t.Object({ id: t.Number() }),
-      ...roleMiddleware(['SUPER_ADMIN']),
-    },
+    { params: t.Object({ id: t.Number() }), ...roleMiddleware(['SUPER_ADMIN']) },
   );
