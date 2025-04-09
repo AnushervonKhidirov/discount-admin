@@ -1,0 +1,115 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  role      Role      @default(USER)
+  archived  Boolean   @default(false)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamp(0)
+  token     Token[]
+  company   Company[]
+
+  @@map("users")
+}
+
+model Token {
+  refreshToken String   @id @unique @map("refresh_token") @db.VarChar(255)
+  userId       Int      @map("user_id")
+  expiredAt    DateTime @map("expired_at") @db.Timestamp(0)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tokens")
+}
+
+model Company {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique @db.VarChar(50)
+  about     String?    @db.MediumText()
+  logoUrl   String?    @map("logo_url") @db.VarChar(255)
+  verified  Boolean    @default(false)
+  archived  Boolean    @default(false)
+  userId    Int        @map("user_id")
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamp(0)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  discount  Discount[]
+  cashback  Cashback[]
+  store     Store[]
+
+  @@map("companies")
+}
+
+model Bank {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique @db.VarChar(50)
+  logoUrl   String?    @map("logo_url") @db.VarChar(255)
+  archived  Boolean    @default(false)
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamp(0)
+  cashback  Cashback[]
+
+  @@map("banks")
+}
+
+model Discount {
+  id        Int      @id @default(autoincrement())
+  size      Int      @db.TinyInt()
+  about     String?  @db.MediumText()
+  startAt   DateTime @map("start_at") @db.DateTime()
+  endAt     DateTime @map("end_at") @db.DateTime()
+  archived  Boolean  @default(false)
+  companyId Int      @map("company_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("discounts")
+}
+
+model Cashback {
+  id        Int      @id @default(autoincrement())
+  size      Int      @db.TinyInt()
+  about     String?  @db.MediumText()
+  startAt   DateTime @map("start_at") @db.DateTime()
+  endAt     DateTime @map("end_at") @db.DateTime()
+  archived  Boolean  @default(false)
+  companyId Int      @map("company_id")
+  bankId    Int      @map("bank_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  bank      Bank     @relation(fields: [bankId], references: [id], onDelete: Cascade)
+
+  @@map("cashbacks")
+}
+
+model Store {
+  id        Int      @id @default(autoincrement())
+  latitude  Float
+  longitude Float
+  openAt    String   @map("open_at") @db.VarChar(5)
+  closeAt   String   @map("close_at") @db.VarChar(5)
+  archived  Boolean  @default(false)
+  companyId Int      @map("company_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("stores")
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}

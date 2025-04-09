@@ -1,0 +1,90 @@
+Table users {
+  id int [primary key]
+  username varchar [not null]
+  password varchar [not null]
+  role roles
+  archived bool [not null, note: 'default false']
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table users_tokens {
+  refresh_token varchar [primary key, not null]
+  user_id int [ref: > users.id, not null]
+  expiredAt timestamp [not null]
+}
+
+Table companies {
+  id int [primary key]
+  name varchar [not null]
+  about text
+  logo_url varchar [note: 'path to company logo image']
+  verified bool [not null, note: 'default false']
+  archived bool [not null, note: 'default false']
+  user_id int [ref: > users.id, not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table stores {
+  id int [primary key]
+  latitude float [not null]
+  longitude float [not null]
+  open_at time
+  close_at time
+  archived bool [not null, note: 'default false']
+  company_id int [ref: > companies.id, not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table discounts {
+  id int [primary key]
+  size int [not null, note: 'from 0 to 100 (default 0)']
+  about text
+  start_at date [not null]
+  end_at date [not null]
+  archived bool [not null, note: 'default false']
+  company_id int [ref: > companies.id, not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table cashbacks {
+  id int [primary key]
+  size int [not null, note: 'from 0 to 100 (default 0)']
+  about text
+  start_at date [not null]
+  end_at date [not null]
+  archived bool [not null, note: 'default false']
+  company_id int [ref: > companies.id, not null]
+  bank_id int [ref: > banks.id, not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table rating {
+  user_id int [ref: > users.id, not null]
+  company_id int [ref: > companies.id, not null]
+  value int [not null, note: 'from 0 to 5']
+  comments text
+}
+
+Table banks {
+  id int [primary key]
+  name varchar [not null]
+  logo_url varchar [note: 'path to bank logo image', not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table employees {
+  user_id int [ref: > users.id, not null]
+  company_id int [ref: > companies.id, not null]
+}
+
+enum roles {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
