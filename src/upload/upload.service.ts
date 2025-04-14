@@ -20,7 +20,10 @@ export class UploadService {
     }
   }
 
-  async create({ file, path, fileName }: UploadDto): ReturnPromiseWithErr<string> {
+  async create(
+    { file, path, fileName }: UploadDto,
+    addUuid: boolean = false,
+  ): ReturnPromiseWithErr<string> {
     try {
       const format = file.name.split('.').at(-1);
       if (!format) throw new InternalServerErrorException('Unable to save file');
@@ -30,7 +33,7 @@ export class UploadService {
       await this.createFolderIfNotExist(fullPath);
 
       const fileBuffer = Buffer.from(await file.arrayBuffer());
-      const name = `${fileName}-${uuid()}.${format}`;
+      const name = addUuid ? `${fileName}-${uuid()}.${format}` : `${fileName}.${format}`;
 
       await writeFile(join(fullPath, name), fileBuffer);
       return [join(path, name), null];
