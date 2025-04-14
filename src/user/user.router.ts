@@ -9,6 +9,11 @@ const userService = new UserService();
 
 userRouter
   .use(authMiddleware)
+  .get('/me', async ({ store, error }) => {
+    const [users, err] = await userService.findOne({ id: store.userId });
+    if (err) throw error(err.status, { ...err });
+    return users;
+  })
   .get('/', async ({ error }) => {
     const [users, err] = await userService.findMany();
     if (err) throw error(err.status, { ...err });
