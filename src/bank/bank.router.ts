@@ -43,24 +43,6 @@ bankRouter
     },
     { params: t.Object({ id: t.Number() }), body: updateBankBody },
   )
-  .patch(
-    '/archive/:id',
-    async ({ params, error }) => {
-      const [bank, err] = await banksService.archive(params.id);
-      if (err) throw error(err.status, { ...err });
-      return bank;
-    },
-    { params: t.Object({ id: t.Number() }) },
-  )
-  .patch(
-    '/unarchive/:id',
-    async ({ params, error }) => {
-      const [bank, err] = await banksService.unArchive(params.id);
-      if (err) throw error(err.status, { ...err });
-      return bank;
-    },
-    { params: t.Object({ id: t.Number() }) },
-  )
   .post(
     '/upload-logo/:id',
     async ({ params, body, error }) => {
