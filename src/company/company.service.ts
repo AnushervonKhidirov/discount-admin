@@ -3,7 +3,7 @@ import type { ReturnPromiseWithErr } from '@type/return-with-error.type';
 import type { CreateCompanyDto } from './dto/create-company.dto';
 
 import { Prisma, PrismaClient } from '@prisma/client';
-import { exceptionHelper } from '@helper/exception.helper';
+import { exceptionHandler } from '@helper/exception.helper';
 import { NotFoundException } from '@exception';
 import { UploadService } from '../upload/upload.service';
 import { UploadPath } from '../common/constant/upload';
@@ -18,7 +18,7 @@ export class CompanyService {
       if (!company) throw new NotFoundException('Company not found');
       return [company, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -27,7 +27,7 @@ export class CompanyService {
       const companies = await this.repository.findMany({ where });
       return [companies, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -36,7 +36,7 @@ export class CompanyService {
       const companies = await this.repository.create({ data: { name, about, userId } });
       return [companies, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -53,7 +53,7 @@ export class CompanyService {
 
       return [company, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -65,7 +65,7 @@ export class CompanyService {
       });
       return [company, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -77,7 +77,7 @@ export class CompanyService {
       });
       return [company, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -86,7 +86,7 @@ export class CompanyService {
       const companies = await this.repository.delete({ where: { id } });
       return [companies, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -112,7 +112,7 @@ export class CompanyService {
 
       return [updatedCompany, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 }

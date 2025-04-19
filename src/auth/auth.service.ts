@@ -14,7 +14,7 @@ import {
   HttpException,
   InternalServerErrorException,
 } from '@exception';
-import { exceptionHelper } from '@helper/exception.helper';
+import { exceptionHandler } from '@helper/exception.helper';
 
 export class AuthService {
   private readonly userService = new UserService();
@@ -30,7 +30,7 @@ export class AuthService {
 
       return [token, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -48,7 +48,7 @@ export class AuthService {
       if (tokenErr) throw tokenErr;
       return [token, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -99,7 +99,7 @@ export class AuthService {
 
       return [token, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 

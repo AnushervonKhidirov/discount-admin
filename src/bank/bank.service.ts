@@ -3,7 +3,7 @@ import type { ReturnPromiseWithErr } from '@type/return-with-error.type';
 import type { CreateBankDto } from './dto/create-bank.dto';
 
 import { PrismaClient } from '@prisma/client';
-import { exceptionHelper } from '@helper/exception.helper';
+import { exceptionHandler } from '@helper/exception.helper';
 import { ConflictException, NotFoundException } from '@exception';
 import { UploadService } from '../upload/upload.service';
 import { UploadPath } from '../common/constant/upload';
@@ -18,7 +18,7 @@ export class BankService {
       if (!bank) throw new NotFoundException('Bank not found');
       return [bank, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -27,7 +27,7 @@ export class BankService {
       const banks = await this.repository.findMany({ where });
       return [banks, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -39,7 +39,7 @@ export class BankService {
       const bank = await this.repository.create({ data: createBankDto });
       return [bank, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -51,7 +51,7 @@ export class BankService {
       const bank = await this.repository.update({ data: updateBankDto, where: { id } });
       return [bank, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -61,7 +61,7 @@ export class BankService {
       if (err) throw err;
       return [bank, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -71,7 +71,7 @@ export class BankService {
       if (err) throw err;
       return [bank, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -83,7 +83,7 @@ export class BankService {
       const bank = await this.repository.delete({ where: { id } });
       return [bank, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -107,7 +107,7 @@ export class BankService {
 
       return [updatedBank, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 }

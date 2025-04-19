@@ -3,7 +3,7 @@ import type { ReturnPromiseWithErr } from '@type/return-with-error.type';
 import type { CreateUserDto } from './dto/create-user.dto';
 
 import { PrismaClient } from '@prisma/client';
-import { exceptionHelper } from '@helper/exception.helper';
+import { exceptionHandler } from '@helper/exception.helper';
 import { NotFoundException } from '@exception';
 
 export class UserService {
@@ -18,7 +18,7 @@ export class UserService {
       if (!user) throw new NotFoundException('User not found');
       return [user, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -27,7 +27,7 @@ export class UserService {
       const users = await this.repository.findMany({ where, omit: { password: true } });
       return [users, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -44,7 +44,7 @@ export class UserService {
       });
       return [user, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -62,7 +62,7 @@ export class UserService {
       });
       return [user, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -76,7 +76,7 @@ export class UserService {
 
       return [user, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -90,7 +90,7 @@ export class UserService {
 
       return [user, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -99,7 +99,7 @@ export class UserService {
       const deletedUser = await this.repository.delete({ where: { id }, omit: { password: true } });
       return [deletedUser, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 }

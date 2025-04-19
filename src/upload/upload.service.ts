@@ -6,7 +6,7 @@ import { exists, writeFile, mkdir, unlink } from 'fs/promises';
 import { join } from 'path';
 import { v4 as uuid } from 'uuid';
 import { InternalServerErrorException, NotFoundException } from '@exception';
-import { exceptionHelper } from '@helper/exception.helper';
+import { exceptionHandler } from '@helper/exception.helper';
 
 export class UploadService {
   async get(path: string, fileName: string): ReturnPromiseWithErr<ElysiaFile> {
@@ -16,7 +16,7 @@ export class UploadService {
       if (!isExist) throw new NotFoundException('File not found');
       return [file(fullPath), null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -38,7 +38,7 @@ export class UploadService {
       await writeFile(join(fullPath, name), fileBuffer);
       return [join(path, name), null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -50,7 +50,7 @@ export class UploadService {
       await unlink(fullPath);
       return [{}, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 

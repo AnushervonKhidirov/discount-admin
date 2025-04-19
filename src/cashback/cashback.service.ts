@@ -5,7 +5,7 @@ import type { CreateCashbackDto } from './dto/create-cashback.dto';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { NotFoundException } from '@exception';
 
-import { exceptionHelper } from '@helper/exception.helper';
+import { exceptionHandler } from '@helper/exception.helper';
 
 export class CashbackService {
   private readonly repository = new PrismaClient().cashback;
@@ -16,7 +16,7 @@ export class CashbackService {
       if (!cashback) throw new NotFoundException('Cashback not found');
       return [cashback, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -25,7 +25,7 @@ export class CashbackService {
       const cashbacks = await this.repository.findMany({ where });
       return [cashbacks, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -40,7 +40,7 @@ export class CashbackService {
 
       return [cashback, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -57,7 +57,7 @@ export class CashbackService {
 
       return [cashback, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -69,7 +69,7 @@ export class CashbackService {
       });
       return [cashback, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -81,7 +81,7 @@ export class CashbackService {
       });
       return [cashback, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -90,7 +90,7 @@ export class CashbackService {
       const cashback = await this.repository.delete({ where: { id } });
       return [cashback, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 }

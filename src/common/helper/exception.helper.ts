@@ -7,14 +7,14 @@ import {
   NotFoundException,
 } from '@exception';
 
-export function exceptionHelper(err: unknown, logError?: boolean): [null, HttpException] {
-  const isHttpException = err instanceof HttpException;
-  if (logError && !isHttpException) logger.error(err);
-
+export function exceptionHandler(err: unknown): [null, HttpException] {
   if (err instanceof PrismaClientKnownRequestError) {
     const exception = prismaException(err);
     if (exception) return [null, exception];
   }
+
+  const isHttpException = err instanceof HttpException;
+  if (!isHttpException) logger.error(err);
 
   const exception = isHttpException ? err : new InternalServerErrorException();
   return [null, exception];
@@ -26,11 +26,6 @@ function prismaException(err: PrismaClientKnownRequestError) {
     P2025: new NotFoundException(),
     P2003: new NotFoundException(getFieldName(err.meta?.field_name, 'not found')),
   };
-
-  console.log(
-    'error',
-    typeof err.meta?.field_name === 'string' ? err.meta.field_name.replace('_id', '') : undefined,
-  );
 
   if (codes[err.code]) return codes[err.code];
 }

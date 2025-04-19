@@ -5,7 +5,7 @@ import type { CreateDiscountDto } from './dto/create-discount.dto';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { NotFoundException } from '@exception';
 
-import { exceptionHelper } from '@helper/exception.helper';
+import { exceptionHandler } from '@helper/exception.helper';
 
 export class DiscountService {
   private readonly repository = new PrismaClient().discount;
@@ -16,7 +16,7 @@ export class DiscountService {
       if (!discount) throw new NotFoundException('Discount not found');
       return [discount, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -25,7 +25,7 @@ export class DiscountService {
       const discounts = await this.repository.findMany({ where });
       return [discounts, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -40,7 +40,7 @@ export class DiscountService {
 
       return [discount, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -57,7 +57,7 @@ export class DiscountService {
 
       return [discount, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -69,7 +69,7 @@ export class DiscountService {
       });
       return [discount, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -81,7 +81,7 @@ export class DiscountService {
       });
       return [discount, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 
@@ -90,7 +90,7 @@ export class DiscountService {
       const discount = await this.repository.delete({ where: { id } });
       return [discount, null];
     } catch (err) {
-      return exceptionHelper(err);
+      return exceptionHandler(err);
     }
   }
 }

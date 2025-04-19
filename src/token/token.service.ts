@@ -5,7 +5,7 @@ import type { ReturnWithErr, ReturnPromiseWithErr } from '@type/return-with-erro
 
 import { PrismaClient } from '@prisma/client';
 import { sign, verify } from 'jsonwebtoken';
-import { exceptionHelper } from '@helper/exception.helper';
+import { exceptionHandler } from '@helper/exception.helper';
 import { UnauthorizedException } from '@exception';
 
 export class TokenService {
@@ -24,7 +24,7 @@ export class TokenService {
 
       return [{ accessToken, refreshToken }, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -36,7 +36,7 @@ export class TokenService {
       const token = await this.repository.create({ data: { refreshToken, userId, expiredAt } });
       return [token, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -50,7 +50,7 @@ export class TokenService {
       });
       return [token, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -59,7 +59,7 @@ export class TokenService {
       const token = await this.repository.deleteMany({ where: { userId } });
       return [token, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -70,7 +70,7 @@ export class TokenService {
       if (typeof userPayload === 'string') throw new Error('Payload is a string');
       return [userPayload, null];
     } catch (err) {
-      return exceptionHelper(new UnauthorizedException('Invalid token'), true);
+      return exceptionHandler(new UnauthorizedException('Invalid token'));
     }
   }
 
@@ -81,7 +81,7 @@ export class TokenService {
       if (typeof userPayload === 'string') throw new Error('Payload is a string');
       return [userPayload, null];
     } catch (err) {
-      return exceptionHelper(new UnauthorizedException('Invalid token'), true);
+      return exceptionHandler(new UnauthorizedException('Invalid token'));
     }
   }
 }

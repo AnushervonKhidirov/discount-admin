@@ -3,7 +3,7 @@ import type { ReturnPromiseWithErr } from '@type/return-with-error.type';
 import type { createStoreDto } from './dto/cerate-store.dto';
 
 import { PrismaClient } from '@prisma/client';
-import { exceptionHelper } from '@helper/exception.helper';
+import { exceptionHandler } from '@helper/exception.helper';
 import { NotFoundException } from '@exception';
 
 export class StoreService {
@@ -15,7 +15,7 @@ export class StoreService {
       if (!store) throw new NotFoundException('Store not found');
       return [store, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -24,7 +24,7 @@ export class StoreService {
       const stores = await this.repository.findMany({ where });
       return [stores, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -39,7 +39,7 @@ export class StoreService {
 
       return [store, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -56,7 +56,7 @@ export class StoreService {
 
       return [store, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -69,7 +69,7 @@ export class StoreService {
 
       return [store, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -82,7 +82,7 @@ export class StoreService {
 
       return [store, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 
@@ -91,7 +91,7 @@ export class StoreService {
       const store = await this.repository.delete({ where: { id } });
       return [store, null];
     } catch (err) {
-      return exceptionHelper(err, true);
+      return exceptionHandler(err);
     }
   }
 }
