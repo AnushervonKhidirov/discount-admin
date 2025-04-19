@@ -50,13 +50,13 @@ export class UserService {
 
   async update(
     id: number,
-    { username, password }: Partial<User>,
+    { username, password, role, archived }: Partial<User>,
   ): ReturnPromiseWithErr<Omit<User, 'password'>> {
     try {
       const hashedPassword = password && (await Bun.password.hash(password, 'bcrypt'));
 
       const user = await this.repository.update({
-        data: { username, password: hashedPassword },
+        data: { username, password: hashedPassword, role, archived },
         where: { id },
         omit: { password: true },
       });

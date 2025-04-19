@@ -30,30 +30,14 @@ userRouter
   )
   .put(
     '/:id',
-    async ({ params, body, error }) => {
+    async ({ store, params, body, error }) => {
+      if (store.role !== 'SUPER_ADMIN') delete body.role;
+
       const [user, err] = await userService.update(params.id, body);
       if (err) throw error(err.status, { ...err });
       return user;
     },
     { params: t.Object({ id: t.Number() }), body: updateUserBody },
-  )
-  .patch(
-    '/archive/:id',
-    async ({ params, error }) => {
-      const [user, err] = await userService.archive(params.id);
-      if (err) throw error(err.status, { ...err });
-      return user;
-    },
-    { params: t.Object({ id: t.Number() }) },
-  )
-  .patch(
-    '/unarchive/:id',
-    async ({ params, error }) => {
-      const [user, err] = await userService.unArchive(params.id);
-      if (err) throw error(err.status, { ...err });
-      return user;
-    },
-    { params: t.Object({ id: t.Number() }) },
   )
   .delete(
     '/:id',
